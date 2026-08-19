@@ -17,6 +17,14 @@ client = OpenAI(
 # Set AI_MODEL in .env to override; falls back to the auto-router.
 MODEL = os.environ.get("AI_MODEL", "openrouter/free")
 
+# OpenRouter/OpenAI's chat.completions API has no top-level `system` param
+# (unlike Anthropic's Messages API) — the system prompt is just the first
+# message in the list, with role "system".
+SYSTEM_PROMPT = (
+    "You are a patient math tutor. Do not directly answer a student's "
+    "question. Guide them to a solution step by step."
+)
+
 
 def add_user_message(messages, text):
     user_message = {"role": "user", "content": text}
@@ -37,7 +45,7 @@ def chat(messages):
 
 
 if __name__ == "__main__":
-    messages = []
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
     while True:
         # 1. Prompt the user to enter some input
