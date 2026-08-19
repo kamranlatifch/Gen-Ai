@@ -39,11 +39,20 @@ def chat(messages):
 if __name__ == "__main__":
     messages = []
 
-    add_user_message(messages, "What is the capital of Pakistan?")
-    answer = chat(messages)
-    print(answer)
+    while True:
+        # 1. Prompt the user to enter some input
+        user_input = input("You: ")
 
-    add_assistant_message(messages, answer)
-    add_user_message(messages, "What's its speciality?")
-    answer = chat(messages)
-    print(answer)
+        # 2. Add it to the list of messages
+        add_user_message(messages, user_input)
+
+        # 3. Call the API
+        answer = chat(messages)
+
+        # 4. Add generated text to the list of messages
+        add_assistant_message(messages, answer)
+
+        # 5. Print the generated text
+        print(f"Bot: {answer}\n")
+
+        # 6. Repeat from #1
