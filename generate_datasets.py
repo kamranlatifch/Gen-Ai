@@ -10,6 +10,7 @@ Here we generate those test inputs by asking an LLM for them.
 
 import json
 import os
+import time
 
 from dotenv import load_dotenv
 from openai import OpenAI, RateLimitError
@@ -36,6 +37,35 @@ GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-20b")
 openrouter_exhausted = False
 
 
+def ask_groq(messages, temperature, attempts=4):
+    """Call Groq, waiting and retrying if we exceed its per-minute limit.
+
+    Groq's free tier caps tokens per minute, not just per day, so running
+    several evaluations at once can trip it. That limit clears on its own in
+    seconds, so the fix is to wait rather than to give up.
+    """
+    for attempt in range(attempts):
+        try:
+            # gpt-oss is a reasoning model. Left alone it spends its whole 2048
+            # token output budget thinking and returns a truncated (or empty)
+            # answer. Low effort keeps the thinking short and the answer intact.
+            return groq_client.chat.completions.create(
+                model=GROQ_MODEL,
+                messages=messages,
+                temperature=temperature,
+                max_tokens=4096,
+                extra_body={"reasoning_effort": "low"},
+            )
+        except RateLimitError:
+            if attempt == attempts - 1:
+                raise
+            wait = 10 * (attempt + 1)
+            print(f"(Groq rate limit, waiting {wait}s...)")
+            time.sleep(wait)
+
+    raise RuntimeError("unreachable")
+
+
 def ask(prompt, temperature=0.0):
     """Send one prompt, get the reply back as a string.
 
@@ -58,16 +88,7 @@ def ask(prompt, temperature=0.0):
             openrouter_exhausted = True
 
     if response is None:
-        # gpt-oss is a reasoning model. Left alone it spends its whole 2048
-        # token output budget thinking and returns a truncated (or empty)
-        # answer. Low effort keeps the thinking short and the answer intact.
-        response = groq_client.chat.completions.create(
-            model=GROQ_MODEL,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=4096,
-            extra_body={"reasoning_effort": "low"},
-        )
+        response = ask_groq(messages, temperature)
 
     # Some free models occasionally return an empty message. Return "" rather
     # than None so callers can treat the result as a string either way.

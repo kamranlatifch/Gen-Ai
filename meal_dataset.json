@@ -1,0 +1,44 @@
+[
+  {
+    "prompt_inputs": {
+      "height": "180",
+      "weight": "75",
+      "goal": "muscle gain",
+      "restrictions": "none"
+    },
+    "solution_criteria": [
+      "The meal plan must contain exactly 3 meals (breakfast, lunch, dinner) and 2 snacks.",
+      "Total daily calories must be between 2800 and 3000 kcal.",
+      "Protein intake must be at least 1.8 g per kg of body weight (\u2248135 g).",
+      "Each meal must include a source of lean protein, a complex carbohydrate, and a vegetable."
+    ]
+  },
+  {
+    "prompt_inputs": {
+      "height": "165",
+      "weight": "60",
+      "goal": "weight loss",
+      "restrictions": "gluten-free"
+    },
+    "solution_criteria": [
+      "The meal plan must contain exactly 3 meals and 2 snacks.",
+      "Total daily calories must be between 1500 and 1700 kcal.",
+      "All grains and breads must be labeled gluten\u2011free.",
+      "The plan must include at least 2 servings of fruit and 3 servings of vegetables."
+    ]
+  },
+  {
+    "prompt_inputs": {
+      "height": "190",
+      "weight": "95",
+      "goal": "endurance",
+      "restrictions": "lactose intolerant, nut allergy"
+    },
+    "solution_criteria": [
+      "The meal plan must contain exactly 3 meals and 2 snacks.",
+      "Total daily calories must be between 3500 and 3800 kcal.",
+      "Protein sources must exclude dairy and nuts; acceptable options include poultry, fish, legumes, and soy products.",
+      "The plan must provide at least 4 servings of whole grains and 5 servings of vegetables, and must not contain any hidden dairy or nut ingredients."
+    ]
+  }
+]
