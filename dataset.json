@@ -1,11 +1,11 @@
 [
   {
-    "task": "Write a Python function that takes an AWS region as input and returns a list of all S3 bucket names in that region."
+    "task": "Write a Python function using boto3 that takes a bucket name and prefix as arguments and returns a list of all object keys (handling pagination) under that prefix in S3."
   },
   {
-    "task": "Provide a JSON document that defines an IAM policy allowing a user to list and get objects from any S3 bucket in the account."
+    "task": "Create a JSON policy document for an IAM role that allows an AWS Lambda function to write logs to CloudWatch Logs and read objects from a specific S3 bucket named 'my-data-bucket'."
   },
   {
-    "task": "Create a regular expression that matches an AWS EC2 instance ARN format, e.g., arn:aws:ec2:us-east-1:123456789012:instance/i-0abcd1234ef567890."
+    "task": "Write a regular expression to validate an AWS ARN (Amazon Resource Name) format, capturing the partition, service, region, account ID, and resource type/ID into named groups."
   }
 ]

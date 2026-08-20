@@ -30,6 +30,12 @@ groq_client = OpenAI(
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-20b")
 
 
+# Once OpenRouter's daily limit is spent, every later call would also fail, so
+# remember it and skip straight to Groq instead of paying for a doomed request
+# on each one.
+openrouter_exhausted = False
+
+
 def ask(prompt, temperature=0.0):
     """Send one prompt, get the reply back as a string.
 
@@ -37,17 +43,35 @@ def ask(prompt, temperature=0.0):
     output, otherwise scores wobble between runs and you can't tell whether a
     prompt change helped or the model just rolled different dice.
     """
+    global openrouter_exhausted
+
     messages = [{"role": "user", "content": prompt}]
-    try:
-        response = client.chat.completions.create(
-            model=MODEL, messages=messages, temperature=temperature
-        )
-    except RateLimitError:
-        print("(OpenRouter rate limit hit, falling back to Groq...)")
+    response = None
+
+    if not openrouter_exhausted:
+        try:
+            response = client.chat.completions.create(
+                model=MODEL, messages=messages, temperature=temperature
+            )
+        except RateLimitError:
+            print("(OpenRouter daily limit reached, using Groq from here on...)")
+            openrouter_exhausted = True
+
+    if response is None:
+        # gpt-oss is a reasoning model. Left alone it spends its whole 2048
+        # token output budget thinking and returns a truncated (or empty)
+        # answer. Low effort keeps the thinking short and the answer intact.
         response = groq_client.chat.completions.create(
-            model=GROQ_MODEL, messages=messages, temperature=temperature
+            model=GROQ_MODEL,
+            messages=messages,
+            temperature=temperature,
+            max_tokens=4096,
+            extra_body={"reasoning_effort": "low"},
         )
-    return response.choices[0].message.content
+
+    # Some free models occasionally return an empty message. Return "" rather
+    # than None so callers can treat the result as a string either way.
+    return response.choices[0].message.content or ""
 
 
 def extract_json(text):
