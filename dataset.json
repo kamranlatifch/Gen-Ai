@@ -1,0 +1,11 @@
+[
+  {
+    "task": "Write a Python function that takes an AWS region as input and returns a list of all S3 bucket names in that region."
+  },
+  {
+    "task": "Provide a JSON document that defines an IAM policy allowing a user to list and get objects from any S3 bucket in the account."
+  },
+  {
+    "task": "Create a regular expression that matches an AWS EC2 instance ARN format, e.g., arn:aws:ec2:us-east-1:123456789012:instance/i-0abcd1234ef567890."
+  }
+]
