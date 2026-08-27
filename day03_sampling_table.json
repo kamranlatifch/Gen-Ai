@@ -1,0 +1,23 @@
+{
+  "prompt": "Invent a 12-word slogan for a rainy-day umbrella company. Reply with the slogan only, no quotes, no extra lines.",
+  "rows": [
+    {
+      "label": "focused",
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "output": "(failed: OpenRouter HTTP 404: {\"error\":{\"message\":\"No endpoints found for google/gemini-2.0-flash-exp:free.\",\"code\":404},\"user_id\":\"user_3I7mYAbVmMqzeuxaaHkuUBkpkOj\"})"
+    },
+    {
+      "label": "balanced",
+      "temperature": 0.8,
+      "top_p": 0.9,
+      "output": "(failed: OpenRouter HTTP 404: {\"error\":{\"message\":\"No endpoints found for google/gemini-2.0-flash-exp:free.\",\"code\":404},\"user_id\":\"user_3I7mYAbVmMqzeuxaaHkuUBkpkOj\"})"
+    },
+    {
+      "label": "creative",
+      "temperature": 1.4,
+      "top_p": 0.7,
+      "output": "(failed: OpenRouter HTTP 404: {\"error\":{\"message\":\"No endpoints found for google/gemini-2.0-flash-exp:free.\",\"code\":404},\"user_id\":\"user_3I7mYAbVmMqzeuxaaHkuUBkpkOj\"})"
+    }
+  ]
+}
