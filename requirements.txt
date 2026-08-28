@@ -1,2 +1,3 @@
 openai==3.3.0
 python-dotenv==1.2.3
+voyageai==0.1.0
