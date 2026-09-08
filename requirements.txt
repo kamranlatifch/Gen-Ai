@@ -1,3 +1,5 @@
 openai==3.3.0
 python-dotenv==1.2.3
 voyageai==0.1.0
+deepeval==4.2.2
+logfire[openai]==5.0.0
